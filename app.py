@@ -22,13 +22,15 @@ class App:
         coordinates = PathParser.get_coords_from_file('data/out.txt')
 
         image_width = max(x for x, y in coordinates) - min(x for x, y in coordinates)
+        image_height = max(y for x, y in coordinates) - min(y for x, y in coordinates)
 
-        signal = [complex(x, y) for x, y in coordinates[::10]]
+        signal = [complex(x, y) for x, y in coordinates]
 
-        self.fourier_model = FourierModel(signal, Vector2(-image_width/2, -self.window_height/2), 0, color=(100, 100, 100))
+        self.fourier_model = FourierModel(signal, Vector2(-image_width/2, -image_height/2), 0, color=(50, 50, 50))
         self.path = Path()
 
         self.time = 0
+        self.frame_count = 0
 
     def init(self):
         pygame.init()
@@ -67,6 +69,8 @@ class App:
         FourierDrawer.draw(self.fourier_model, self.window, scale=2)
         self.path.draw(self.window, scale=2, color=(9, 205, 218))
         pygame.display.update()
+        pygame.image.save(self.window, f'render/out{self.frame_count}.png')
+        self.frame_count += 1
 
     def quit(self):
         self.running = False
