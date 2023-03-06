@@ -152,3 +152,4 @@ cython_debug/
 .idea/
 
 render/
+data/create_video.py
